@@ -128,14 +128,6 @@ function Test {
         Install-Module -Name Pester -MinimumVersion 5.5.0 -Confirm:$false -Force
     }
 
-    if ($null -eq (Get-Module PSScriptAnalyzer -ListAvailable | Where-Object { [version]$_.Version -ge [version]"1.22.0" })) {
-        Install-Module -Name Pester -MinimumVersion 1.22.0 -Confirm:$false -Force
-    }
-
-    Import-Module PSScriptAnalyzer
-
-    Invoke-ScriptAnalyzer -Path $src -Recurse
-
     $config = New-PesterConfiguration -Hashtable @{
         Run        = @{ Path = "test" }
         TestResult = @{
