@@ -168,7 +168,9 @@ function Commit {
 function Publish {
     param ()
 
-    Publish-Module -Path $publish -Repository psmodule -NuGetApiKey $env:PSPublishApiKey
+    $repo = if ($env:PSPublishRepo) { $env:PSPublishRepo } else { 'PSGallery' }
+
+    Publish-Module -Path $publish -Repository $repo -NuGetApiKey $env:PSPublishApiKey
 }
 
 function Docs {
