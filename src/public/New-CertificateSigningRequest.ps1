@@ -3,7 +3,7 @@
     Create a new Certificate Signing Request.
 .DESCRIPTION
     Create a new Certificate Signing Request with EnhancedKeyUsages of "Server Authentication" and "Client Authentication".
-.PARAMETER CommmonName
+.PARAMETER CommonName
     The CommonName for the certificate SubjectName.
 .PARAMETER Organization
     The Organization (O) for the certificate SubjectName.
@@ -28,6 +28,8 @@
 .NOTES
     https://stackoverflow.com/questions/48196350/generate-and-sign-certificate-request-using-pure-net-framework
     https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.certificaterequest.-ctor?view=net-8.0
+.LINK
+    Join-CertificateWithKey
 #>
 function New-CertificateSigningRequest {
     [CmdletBinding()]
@@ -37,7 +39,7 @@ function New-CertificateSigningRequest {
         [Parameter(Mandatory , Position = 0)]
         [Alias('CN')]
         [string]
-        $CommmonName,
+        $CommonName,
 
         [Parameter(Position = 1)]
         [String]
@@ -94,7 +96,7 @@ function New-CertificateSigningRequest {
     $distinguishedNameBuilder = [System.Security.Cryptography.X509Certificates.X500DistinguishedNameBuilder]::new()
 
     switch ($PSBoundParameters.Keys) {
-        'CommmonName' { $distinguishedNameBuilder.AddCommonName($CommmonName) }
+        'CommonName' { $distinguishedNameBuilder.AddCommonName($CommonName) }
         'Organization' { $distinguishedNameBuilder.AddOrganizationName($Organization) }
         'OrganizationalUnit' { $distinguishedNameBuilder.AddOrganizationalUnitName($OrganizationalUnit) }
         'Locality' { $distinguishedNameBuilder.AddLocalityName($Locality) }
@@ -136,7 +138,7 @@ function New-CertificateSigningRequest {
     $request.CertificateExtensions.Add(
         [System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension]::new($request.PublicKey, $false))
 
-    $fileBaseName = $CommmonName -replace '\.', '_' -replace '\*', 'WILDCARD'
+    $fileBaseName = ScrubCommonName -CommonName $CommonName
     $keyFile = Join-Path -Path $Path -ChildPath "$fileBaseName.key"
     $csrFile = Join-Path -Path $Path -ChildPath "$fileBaseName.csr"
 

@@ -6,7 +6,7 @@ Create a new Certificate Signing Request with EnhancedKeyUsages of "Server Authe
 
 ### Parameter Set 1
 
-- `[String]` **CommmonName** _The CommonName for the certificate SubjectName._ Mandatory
+- `[String]` **CommonName** _The CommonName for the certificate SubjectName._ Mandatory
 - `[String]` **Organization** _The Organization (O) for the certificate SubjectName._ 
 - `[String]` **OrganizationalUnit** _The OrganizationalUnit (OU) for the certificate SubjectName._ 
 - `[String]` **Locality** _The Locality (L) for the certificate SubjectName._ 
@@ -19,7 +19,7 @@ Create a new Certificate Signing Request with EnhancedKeyUsages of "Server Authe
 
 ### Parameter Set 2
 
-- `[String]` **CommmonName** _The CommonName for the certificate SubjectName._ Mandatory
+- `[String]` **CommonName** _The CommonName for the certificate SubjectName._ Mandatory
 - `[String]` **Organization** _The Organization (O) for the certificate SubjectName._ 
 - `[String]` **OrganizationalUnit** _The OrganizationalUnit (OU) for the certificate SubjectName._ 
 - `[String]` **Locality** _The Locality (L) for the certificate SubjectName._ 
@@ -29,6 +29,10 @@ Create a new Certificate Signing Request with EnhancedKeyUsages of "Server Authe
 - `[Switch]` **ECDSAKey** _Generate and use an ECDSA key pair for the certifice. Not yet implemented._ 
 - `[String]` **Path** _A directory path to store the key and csr PEM files. Default is the current directory._ 
 - `[Switch]` **PassThru** _Optinoally send the CSR PEM content to the pipeline._ 
+
+## Links
+
+- [Join-CertificateWithKey](Join-CertificateWithKey.md)
 
 ## Notes
 
