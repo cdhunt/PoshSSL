@@ -100,42 +100,12 @@ jobs:
 
         if: always()
 
-  test5:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Test PowerShell 5
-    needs: Build
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Download build output
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: publish
-
-      - uses: testspace-com/setup-testspace@v1
-        with:
-          domain: ${{github.repository_owner}}
-
-      - name: Test
-        shell: powershell
-        run: ./build.ps1 test
-
-      - name: Publish Results to Testspace
-        run: testspace "[v5.1]testResults.xml"
-        if: always()
-
   publish:
     permissions:
       contents: read # for actions/checkout to fetch code
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     name: Publish
-    needs: [test7, test5]
+    needs: [test7]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/dotnet/sdk:8.0
