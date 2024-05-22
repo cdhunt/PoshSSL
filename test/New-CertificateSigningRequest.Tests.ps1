@@ -7,7 +7,9 @@ Describe 'New-CertificateSigningRequest' {
             Param(
                 [string] $Path
             )
-            return $Path.Replace('TestDrive:', (Get-PSDrive TestDrive).Root)
+            $leaf = $Path.Replace('TestDrive:\', '')
+            $tempPath = Join-Path -Path (Get-PSDrive TestDrive).Root -ChildPath $leaf
+            return $tempPath
         }
     }
 
@@ -76,7 +78,7 @@ Describe 'New-CertificateSigningRequest' {
             $verifyCSR[38] | Should -Be '    Signature Algorithm: sha256WithRSAEncryption'
         }
 
-        It 'Should generate a valid RSA Key' {
+        It 'Should generate a valid RSA Key' -Skip:($null -eq $openSsl) {
 
             $verifyKey[0] | Should -Be 'RSA key ok'
 
