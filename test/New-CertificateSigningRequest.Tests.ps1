@@ -74,7 +74,7 @@ Describe 'New-CertificateSigningRequest' {
             $verifyCSR[35] | Should -Be '                    DNS:testcsr.example.com'
         }
 
-        It 'SHould use sha256WithRSAEncryption Signature' -Skip:($null -eq $openSsl) {
+        It 'Should use sha256WithRSAEncryption Signature' -Skip:($null -eq $openSsl) {
             $verifyCSR[38] | Should -Be '    Signature Algorithm: sha256WithRSAEncryption'
         }
 
