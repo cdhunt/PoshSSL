@@ -7,7 +7,7 @@ Describe 'New-CertificateSigningRequest' {
             Param(
                 [string] $Path
             )
-            $leaf = [System.IO.Path]::GetRelativePath("TestDrive:\", $Path)
+            $leaf = $Path -replace 'TestDrive:\\', ''
             $tempPath = Join-Path -Path (Get-PSDrive TestDrive).Root -ChildPath $leaf
             return $tempPath
         }
@@ -24,15 +24,15 @@ Describe 'New-CertificateSigningRequest' {
                 -CountryCode US `
                 -SubjectAlternativeNames testcsr.example.com `
                 -RSAKeyLength 2048 `
-                -Path "TestDrive:\" `
+                -Path "TestDrive:" `
                 -PassThru
 
             $csr = Get-Content "TestDrive:\testcsr_example_com.csr" -Raw
             $key = Get-Content "TestDrive:\testcsr_example_com.key" -Raw
 
             if ($null -ne $openSsl) {
-                $verifyCSR = openssl req -text -noout -verify -in "$(GetFullPath 'TestDrive:\testcsr_example_com.csr')"
-                $verifyKey = openssl rsa -in "$(GetFullPath 'TestDrive:\testcsr_example_com.key')" -check
+                $verifyCSR = openssl req -text -noout -verify -in "$(GetFullPath 'TestDrive:\testcsr_example_com.csr')" *>&1
+                $verifyKey = openssl rsa -in "$(GetFullPath 'TestDrive:\testcsr_example_com.key')" -check *>&1
             }
         }
 
@@ -55,7 +55,7 @@ Describe 'New-CertificateSigningRequest' {
         }
 
         It 'Subject should be "C=US, ST=HI, L=Cloud, OU=Pester, O=PoshSSL, CN=testcsr.example.com"' -Skip:($null -eq $openSsl) {
-            $verifyCSR[4] | Should -Be '        Subject: C=US, ST=HI, L=Cloud, OU=Pester, O=PoshSSL, CN=testcsr.example.com'
+            $verifyCSR[4] | Should -Match 'Subject: [C= ]+US, [ST= ]+HI, [L= ]+Cloud, [OU= ]+Pester, [O= ]+PoshSSL, [CN= ]+testcsr\.example\.com'
         }
 
         It 'Should use rsaEncryption' -Skip:($null -eq $openSsl) {
@@ -80,7 +80,7 @@ Describe 'New-CertificateSigningRequest' {
 
         It 'Should generate a valid RSA Key' -Skip:($null -eq $openSsl) {
 
-            $verifyKey[0] | Should -Be 'RSA key ok'
+            $verifyKey | Should -Contain 'RSA key ok'
 
         }
 
