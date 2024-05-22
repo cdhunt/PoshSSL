@@ -7,7 +7,7 @@ Describe 'New-CertificateSigningRequest' {
             Param(
                 [string] $Path
             )
-            $leaf = $Path.Replace('TestDrive:\', '')
+            $leaf = [System.IO.Path]::GetRelativePath("TestDrive:\", $Path)
             $tempPath = Join-Path -Path (Get-PSDrive TestDrive).Root -ChildPath $leaf
             return $tempPath
         }
