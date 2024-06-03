@@ -38,6 +38,7 @@ Describe 'New-CertificateSigningRequest' {
 
         It 'Should PassThru PEM content' {
             $result | Should -Not -BeNullOrEmpty
+            $result[0] | Should -Be '-'
         }
 
         It 'Should Generate a CSR File' {

@@ -121,8 +121,8 @@ function New-CertificateSigningRequest {
             $true))
 
     $oids = [System.Security.Cryptography.OidCollection]::new()
-    $oids.Add([System.Security.Cryptography.Oid]::new("1.3.6.1.5.5.7.3.1")) # Server Authentication
-    $oids.Add([System.Security.Cryptography.Oid]::new("1.3.6.1.5.5.7.3.2")) # Client Authentication
+    $oids.Add([System.Security.Cryptography.Oid]::new("1.3.6.1.5.5.7.3.1")) | Write-Debug # Server Authentication
+    $oids.Add([System.Security.Cryptography.Oid]::new("1.3.6.1.5.5.7.3.2")) | Write-Debug # Client Authentication
     $enhancedKeyUsage = [System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension]::new($oids, $false)
 
     $request.CertificateExtensions.Add($enhancedKeyUsage)
