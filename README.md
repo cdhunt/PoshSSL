@@ -19,3 +19,16 @@ A PowerShell module for working with x509 Certificates.
 ## Docs
 
 [Full Docs](docs)
+
+## Usage
+
+This module has two sets of functionality.
+
+### Inspect
+
+The `Get|Show|Test-SSLCertificate` cmdlets help you inspect an HTTPS endpoint and examine the presented certificate.
+
+### Create
+
+The [New-CertificateSigningRequest](docs/New-CertificateSigningRequest.md) and [Join-CertificateWithKey](docs/Join-CertificateWithKey.md) cmdlets can be used for a typical new certificate request process.
+Only RSA keys are currently supported and Certificate Extensions are hardcoded.
