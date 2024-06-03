@@ -15,7 +15,7 @@ Create a new Certificate Signing Request with EnhancedKeyUsages of "Server Authe
 - `[String[]]` **SubjectAlternativeNames** _A list of SAN DNS Names._ 
 - `[Int32]` **RSAKeyLength** _Generate and use an RSA key pair of this size for the certificate._ 
 - `[String]` **Path** _A directory path to store the key and csr PEM files. Default is the current directory._ 
-- `[Switch]` **PassThru** _Optinoally send the CSR PEM content to the pipeline._ 
+- `[Switch]` **PassThru** _Optionally send the CSR PEM content to the pipeline._ 
 
 ### Parameter Set 2
 
@@ -28,7 +28,7 @@ Create a new Certificate Signing Request with EnhancedKeyUsages of "Server Authe
 - `[String[]]` **SubjectAlternativeNames** _A list of SAN DNS Names._ 
 - `[Switch]` **ECDSAKey** _Generate and use an ECDSA key pair for the certifice. Not yet implemented._ 
 - `[String]` **Path** _A directory path to store the key and csr PEM files. Default is the current directory._ 
-- `[Switch]` **PassThru** _Optinoally send the CSR PEM content to the pipeline._ 
+- `[Switch]` **PassThru** _Optionally send the CSR PEM content to the pipeline._ 
 
 ## Links
 

@@ -10,11 +10,15 @@
 .PARAMETER Password
     The password to protect the PFX file.
 .PARAMETER PassThru
-    Optinoally send the CSR PEM content to the pipeline.
+    Optionally send the X509Certificate2 object to the pipeline.
 .NOTES
     The PFX file will be saved to the same directory as `$Certificate`.
 .LINK
     New-CertificateSigningRequest
+.EXAMPLE
+    Join-CertificateWithKey -Certificate .\mynew.cer -PrivateKey .\mynew.key -Password (Get-Credential).Password
+
+    Join CA signed certificate with issuing private key and export to a PFX file.
 #>
 function Join-CertificateWithKey {
     [CmdletBinding()]

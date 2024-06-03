@@ -24,7 +24,7 @@
 .PARAMETER Path
     A directory path to store the key and csr PEM files. Default is the current directory.
 .PARAMETER PassThru
-    Optinoally send the CSR PEM content to the pipeline.
+    Optionally send the CSR PEM content to the pipeline.
 .NOTES
     https://stackoverflow.com/questions/48196350/generate-and-sign-certificate-request-using-pure-net-framework
     https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.certificaterequest.-ctor?view=net-8.0
