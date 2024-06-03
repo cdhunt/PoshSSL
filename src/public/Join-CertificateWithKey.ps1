@@ -1,5 +1,3 @@
-using namespace Security.Cryptography.X509Certificates
-
 <#
 .SYNOPSIS
     Join a Certificate and Private Key and export to a PFX file.
@@ -11,8 +9,10 @@ using namespace Security.Cryptography.X509Certificates
     The path to a PEM encoded private key file.
 .PARAMETER Password
     The password to protect the PFX file.
+.PARAMETER PassThru
+    Optinoally send the CSR PEM content to the pipeline.
 .NOTES
-    Information or caveats about the function e.g. 'This function is not supported in Linux'
+    The PFX file will be saved to the same directory as `$Certificate`.
 .LINK
     New-CertificateSigningRequest
 #>
@@ -30,32 +30,33 @@ function Join-CertificateWithKey {
 
         [Parameter(Position = 0)]
         [securestring]
-        $Password = $null
+        $Password = $null,
+
+        [Parameter()]
+        [switch]
+        $PassThru
     )
-
-    begin {
-
-    }
 
     process {
 
         $certPath = Get-Item -Path $Certificate
-        $newCert = [X509Certificate2]::New($certPath.FullName)
-        $cn = $newCert.GetNameInfo([X509NameType]::SimpleName, $false)
+        $newCert = [Security.Cryptography.X509Certificates.X509Certificate2]::New($certPath.FullName)
+        $cn = $newCert.GetNameInfo([Security.Cryptography.X509Certificates.X509NameType]::SimpleName, $false)
 
         $pemKey = Get-Content $PrivateKey -Raw
         $pk = [System.Security.Cryptography.RSA]::Create()
         $pk.ImportFromPem($pemKey)
 
-        $newCert = [RSACertificateExtensions]::CopyWithPrivateKey($newCert, $pk)
+        $newCert = [Security.Cryptography.X509Certificates.RSACertificateExtensions]::CopyWithPrivateKey($newCert, $pk)
 
         $fileBaseName = ScrubCommonName -CommonName $cn
-        $pfxFile = Join-Path -Path $Path -ChildPath "$fileBaseName.pfx"
+        $pfxFile = Join-Path -Path $certPath.Directory.FullName -ChildPath "$fileBaseName.pfx"
 
-        [System.IO.File]::WriteAllBytes($pfxFile, $($newCert.Export([System.X509ContentType]::Pkcs12, $Password)))
+        [System.IO.File]::WriteAllBytes($pfxFile, $($newCert.Export([Security.Cryptography.X509Certificates.X509ContentType]::Pkcs12, $Password)))
+
+        if ($PassThru) {
+            $newCert | Write-Output
+        }
     }
 
-    end {
-
-    }
 }
