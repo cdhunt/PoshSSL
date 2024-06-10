@@ -1,9 +1,6 @@
 Describe 'Get-SSLCertificate' {
     BeforeAll {
-        Import-Module "$PSScriptRoot/../publish/PoshSSL" -Force
-    }
-    AfterAll {
-        Remove-Module PoshSSL
+        . "$PSScriptRoot/../publish/PoshSSL/public/Get-SSLCertificate.ps1"
     }
 
     Context 'Valid' {
@@ -19,10 +16,6 @@ Describe 'Get-SSLCertificate' {
     }
 
     Context 'OutSslStreamVariable' {
-        AfterEach {
-            Remove-Variable -Name sslStreamValue -ErrorAction SilentlyContinue
-        }
-
         It "Sets OutSslStreamVariable" {
             $cert = Get-SSLCertificate -ComputerName 'google.com' -OutSslStreamVariable sslStreamValue
             $sslStreamvalue | Should -Not -BeNullOrEmpty
