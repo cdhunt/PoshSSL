@@ -1,4 +1,3 @@
-
 Describe 'ConvertTo-X509Certificate' {
     BeforeAll {
         Import-Module "$PSScriptRoot/../publish/PoshSSL" -Force

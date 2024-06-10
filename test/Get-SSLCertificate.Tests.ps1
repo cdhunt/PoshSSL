@@ -1,10 +1,11 @@
-BeforeAll {
-
-    Import-Module "$PSScriptRoot/../publish/PoshSSL" -Force
-
-}
-
 Describe 'Get-SSLCertificate' {
+    BeforeAll {
+        Import-Module "$PSScriptRoot/../publish/PoshSSL" -Force
+    }
+    AfterAll {
+        Remove-Module PoshSSL
+    }
+
     Context 'Valid' {
         It "Returns <expected> (<name>)" -ForEach @(
             @{name = 'google.com'; expected = 'CN=*.google.com' }
@@ -44,8 +45,4 @@ Describe 'Get-SSLCertificate' {
             $cert.Subject | Should -be $expected
         }
     }
-}
-
-AfterAll {
-    Remove-Module PoshSSL
 }
