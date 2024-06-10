@@ -22,12 +22,12 @@
 .PARAMETER ECDSAKey
     Generate and use an ECDSA key pair for the certifice. Not yet implemented.
 .PARAMETER Path
-    A directory path to store the key and csr PEM files. Default is the current directory.
+    A directory path to store the Key and CSR PEM files. Default is the current directory.
 .PARAMETER PassThru
     Optionally send the CSR PEM content to the pipeline.
 .NOTES
-    https://stackoverflow.com/questions/48196350/generate-and-sign-certificate-request-using-pure-net-framework
-    https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.certificaterequest.-ctor?view=net-8.0
+    This command will write a `.csr` and `.key` file to `$Path`.
+    The Key is not encrypted. Ensure it is stored in a secure location.
 .LINK
     Join-CertificateWithKey
 #>
@@ -143,6 +143,8 @@ function New-CertificateSigningRequest {
     $csrFile = Join-Path -Path $Path -ChildPath "$fileBaseName.csr"
 
     $privateKey.ExportRSAPrivateKeyPem() | Set-Content -Path $keyFile -Encoding Ascii
+    Write-Warning "'$keyFile' is not encrypted. Be sure to store this file in a secure location."
+
     $pem = $request.CreateSigningRequestPem()
 
     $pem | Set-Content -Path $csrFile -Encoding Ascii
