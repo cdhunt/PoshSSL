@@ -67,7 +67,7 @@ $manifest = @{
     RequiredModules      = @( )
     CmdletsToExport      = ''
     VariablesToExport    = ''
-    AliasesToExport      = @('New-CSR')
+    AliasesToExport      = @('ConvertTo-Certificate','New-CSR')
 }
 
 function Clean {
