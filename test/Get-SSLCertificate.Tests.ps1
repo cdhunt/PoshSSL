@@ -1,6 +1,7 @@
 Describe 'Get-SSLCertificate' {
     BeforeAll {
         . "$PSScriptRoot/../publish/PoshSSL/public/Get-SSLCertificate.ps1"
+        $ServerCertificateCustomValidation_AlwaysTrust = { param($senderObject, $cert, $chain, $errors) return $true }
     }
 
     Context 'Valid' {
