@@ -1,6 +1,6 @@
 Describe 'ScrubCommonName' {
     BeforeAll {
-        . "$PSScriptRoot/../src/private/ScrubCommonName.ps1"
+        . "$PSScriptRoot/../publish/PoshSSL/private/ScrubCommonName.ps1"
     }
 
     Context 'Simple Names' {

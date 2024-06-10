@@ -1,6 +1,7 @@
 Describe 'New-CertificateSigningRequest' {
     BeforeAll {
-        Import-Module "$PSScriptRoot/../publish/PoshSSL" -Force
+        . "$PSScriptRoot/../publish/PoshSSL/private/ScrubCommonName.ps1"
+        . "$PSScriptRoot/../publish/PoshSSL/public/New-CertificateSigningRequest.ps1"
         $openSsl = Get-Command -Name openssl -CommandType Application
 
         function GetFullPath {
@@ -85,9 +86,5 @@ Describe 'New-CertificateSigningRequest' {
 
         }
 
-    }
-
-    AfterAll {
-        Remove-Module PoshSSL
     }
 }

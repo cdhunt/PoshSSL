@@ -1,10 +1,8 @@
-BeforeAll {
-
-    Import-Module "$PSScriptRoot/../publish/PoshSSL" -Force
-
-}
-
 Describe 'Test-SSLCertificate' {
+    BeforeAll {
+        . "$PSScriptRoot/../publish/PoshSSL/public/Test-SSLCertificate.ps1"
+    }
+
     Context 'Valid (Certificate)' {
         It "Returns True (<name>)" -ForEach @(
             @{name = 'google.com' }
@@ -47,8 +45,4 @@ Describe 'Test-SSLCertificate' {
             $error[0].TargetObject.ChainStatus.Status | Should -Be 'UntrustedRoot'
         }
     }
-}
-
-AfterAll {
-    Remove-Module PoshSSL
 }
