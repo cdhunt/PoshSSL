@@ -68,13 +68,14 @@ SslProtocol          : Tls13
 ```
 ### Example 5
 
-Return the certificate for google.com using Tls12 protocol.
+
 
 ```powershell
-Get-SSLCertificate google.com -Port 443 -SslProtocols Tls12
-Thumbprint                                Subject              EnhancedKeyUsageList
-----------                                -------              --------------------
-9B97772CC2C860B0D0663AD3ED34272FF927EDEE  CN=*.google.com      Server Authentication
+Get-SSLCertificate -ComputerName 'google.com' -OutSslStreamVariable sslStreamValue -SslProtocol tls12
+...
+$sslStreamValue
+...
+SslProtocol          : Tls12
 ```
 
 ## Links

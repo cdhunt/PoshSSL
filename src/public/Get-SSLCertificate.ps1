@@ -66,12 +66,11 @@ function Get-SSLCertificate {
 
     Stores SslStream connection details in the `$sslStreamValue` variable.
 .EXAMPLE
-    Get-SSLCertificate google.com -Port 443 -SslProtocols Tls12
-    Thumbprint                                Subject              EnhancedKeyUsageList
-    ----------                                -------              --------------------
-    9B97772CC2C860B0D0663AD3ED34272FF927EDEE  CN=*.google.com      Server Authentication
-
-    Return the certificate for google.com using Tls12 protocol.
+    Get-SSLCertificate -ComputerName 'google.com' -OutSslStreamVariable sslStreamValue -SslProtocol tls12
+    ...
+    $sslStreamValue
+    ...
+    SslProtocol          : Tls12
 #>
 
     [CmdletBinding()]
