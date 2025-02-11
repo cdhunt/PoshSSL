@@ -14,6 +14,10 @@ Describe 'Get-SSLCertificate' {
             $cert.Subject | Should -be $expected
         }
 
+        It "Returns CN=*.badssl.com (https://tls-v1-2.badssl.com:1012/) whe forcing Tls12" {
+            $cert = Get-SSLCertificate -ComputerName 'https://tls-v1-2.badssl.com' -Port 1012 -SslProtocol Tls12
+            $cert.Subject | Should -be 'CN=*.badssl.com'
+        }
     }
 
     Context 'OutSslStreamVariable' {
@@ -37,6 +41,10 @@ Describe 'Get-SSLCertificate' {
         ) {
             $cert = Get-SSLCertificate -ComputerName $name
             $cert.Subject | Should -be $expected
+        }
+
+        It "Errors when server and client protocols do not match" {
+            { Get-SSLCertificate -ComputerName 'https://tls-v1-2.badssl.com:1012/' -SslProtocols Tls11 } | Should -Throw
         }
     }
 }

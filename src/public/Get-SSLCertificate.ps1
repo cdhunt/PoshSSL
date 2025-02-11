@@ -8,6 +8,13 @@ function Get-SSLCertificate {
     A hostname or Url of the server to retreive the certificate.
 .PARAMETER Port
     The port to connect to the remote server.
+.PARAMETER SslProtocol
+    The SslProtocols value that represents protocols used for authentication.
+    The Default is None (Allows the operating system to choose the best protocol to use, and to block protocols that are not secure).
+.PARAMETER ClientCertificate
+    A client certificate used for mTLS.
+.PARAMETER CheckCertificateRevocation
+    Check the certificate revocation list.
 .PARAMETER OutSslStreamVariable
     Stores SslStream connetion details from the command in the specified variable.
 .NOTES
@@ -58,6 +65,13 @@ function Get-SSLCertificate {
     SslProtocol          : Tls13
 
     Stores SslStream connection details in the `$sslStreamValue` variable.
+.EXAMPLE
+    Get-SSLCertificate google.com -Port 443 -SslProtocols Tls12
+    Thumbprint                                Subject              EnhancedKeyUsageList
+    ----------                                -------              --------------------
+    9B97772CC2C860B0D0663AD3ED34272FF927EDEE  CN=*.google.com      Server Authentication
+
+    Return the certificate for google.com using Tls12 protocol.
 #>
 
     [CmdletBinding()]
@@ -69,6 +83,18 @@ function Get-SSLCertificate {
         [Parameter(Position = 1, ValueFromPipelineByPropertyName)]
         [ValidateRange(1, 65535)]
         [int]$Port = 443,
+
+        [Parameter(Position = 2)]
+        [System.Security.Authentication.SslProtocols]
+        $SslProtocol = [System.Security.Authentication.SslProtocols]::None,
+
+        [Parameter(Position = 3)]
+        [System.Security.Cryptography.X509Certificates.X509Certificate[]]
+        $ClientCertificate,
+
+        [Parameter()]
+        [switch]
+        $CheckCertificateRevocation,
 
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]
@@ -91,6 +117,14 @@ function Get-SSLCertificate {
 
         Write-Verbose "ComputerName = $ComputerName"
 
+        $clientCertColl = $null
+        if ($PSBoundParameters.ContainsKey('ClientCertificate')) {
+            $clientCertColl = [System.Security.Cryptography.X509Certificates.X509CertificateCollection]::new()
+            foreach ($cert in $ClientCertificate) {
+                $clientCertColl.Add($cert)
+            }
+        }
+
         $Certificate = $null
         $TcpClient = New-Object -TypeName System.Net.Sockets.TcpClient
 
@@ -102,7 +136,7 @@ function Get-SSLCertificate {
             $SslStream = New-Object -TypeName System.Net.Security.SslStream -ArgumentList @($TcpStream, $true, $ServerCertificateCustomValidation_AlwaysTrust)
             try {
 
-                $SslStream.AuthenticateAsClient($ComputerName)
+                $SslStream.AuthenticateAsClient($ComputerName, $clientCertColl, $SslProtocol, $CheckCertificateRevocation)
                 $Certificate = $SslStream.RemoteCertificate
 
                 if ($PSBoundParameters.ContainsKey('OutSslStreamVariable')) {

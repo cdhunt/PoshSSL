@@ -8,6 +8,10 @@ Open an SSL connection to the given host and read the presented server certifica
 
 - `[String]` **ComputerName** _A hostname or Url of the server to retreive the certificate._ Mandatory, ValueFromPipeline
 - `[Int32]` **Port** _The port to connect to the remote server._ 
+- `[Switch]` **SslProtocol** _The SslProtocols value that represents protocols used for authentication.
+The Default is None (Allows the operating system to choose the best protocol to use, and to block protocols that are not secure)._ 
+- `[X509Certificate[]]` **ClientCertificate** _A client certificate used for mTLS._ 
+- `[Switch]` **CheckCertificateRevocation** _Check the certificate revocation list._ 
 - `[String]` **OutSslStreamVariable** _Stores SslStream connetion details from the command in the specified variable._ 
 
 ## Examples
@@ -61,6 +65,16 @@ HashStrength         : 0
 KeyExchangeAlgorithm : None
 KeyExchangeStrength  : 0
 SslProtocol          : Tls13
+```
+### Example 5
+
+Return the certificate for google.com using Tls12 protocol.
+
+```powershell
+Get-SSLCertificate google.com -Port 443 -SslProtocols Tls12
+Thumbprint                                Subject              EnhancedKeyUsageList
+----------                                -------              --------------------
+9B97772CC2C860B0D0663AD3ED34272FF927EDEE  CN=*.google.com      Server Authentication
 ```
 
 ## Links
